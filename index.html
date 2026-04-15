@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>EmonToto Dashboard - Font Menarik & Warna Segar</title>
+    <!-- Google Fonts: Poppins untuk heading, Inter untuk body -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            padding: 28px 20px;
+            min-height: 100vh;
+        }
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        /* Header Card - gradien lebih segar */
+        .header-card {
+            background: linear-gradient(135deg, #a15b0ae8 50%, #faf602e3 100%);
+            border :3px solid #1e2a32 ;
+            border-radius: 20px;
+            padding: 20px 32px;
+            margin-bottom: 32px;
+            color: rgb(243, 247, 5);
+            font-weight: bold;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2);
+            backdrop-filter: blur(2px);
+        }
+        .brand-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            font-weight: bold;
+        }
+        .brand-row h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.9rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: rgb(39, 38, 38,0.5);
+            border :2px solid #1e2a32 ;
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+        }
+        .clock-panel {
+            background: rgb(39, 38, 38,0.5);
+            border :2px solid #1e2a32 ;
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 8px 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .live-clock-big {
+            font-family: 'Poppins', monospace;
+            font-weight: 600;
+            font-size: 1.4rem;
+            padding: 5px 18px;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+        }
+        .manual-ctrl {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .manual-ctrl select {
+            background: rgb(12, 12, 12,0.3);
+            border: 2px solid #1e2a32 ;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #05fd11;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+        .manual-ctrl button {
+            background: rgb(12, 12, 12,0.3);
+            border: 2px solid #1e2a32 ;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            color: #05fd11;
+        }
+        .manual-ctrl button:last-child {
+            background: rgb(12, 12, 12,0.3);
+            border: 2px solid #1e2a32 ;
+            color: #05fd11;
+        }
+        .manual-ctrl button:hover {
+            transform: scale(0.96);
+            filter: brightness(0.95);
+        }
+        .date-header {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-weight: 500;
+            font-weight: bold;
+        }
+        .two-col-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-bottom: 30px;
+        }
+        .input-panel {
+            flex: 1.2;
+            min-width: 380px;
+            background: rgba(255,255,255,0.95);
+            border: 3px solid #1e2a32 ;
+            border-radius: 15px;
+            padding: 26px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+            transition: transform 0.2s;
+        }
+        .result-panel {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            border: 3px solid #1e2a32 ;
+            padding: 26px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+        }
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1e3c72;
+            padding-left: 16px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 8px;
+            color: #1e3c72;
+            font-weight: bold;
+            letter-spacing: 0.3px;
+            
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border:2px solid #1e2a32 ;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            background: #f7f4f4;
+            font-family: 'Inter', monospace;
+        }
+        textarea {
+            font-family: 'Inter', monospace;
+            resize: vertical;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 0 3px rgba(255,183,77,0.2);
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0 12px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #a15b0ae8 50%, #faf602e3 100%);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 15px;
+            color: rgb(250, 252, 249);
+            border:2px solid #1e2a32 ;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #a15b0ae8 20%, #faf602e3 100%);
+            border:2px solid #1e2a32 ;
+            padding: 12px 24px;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: 0.2s;
+        }
+        .btn-primary:hover { background: linear-gradient(95deg, #1e3c72, #0f2a4f); transform: translateY(-2px);}
+        .btn-secondary:hover { background: #e6edf4; transform: translateY(-1px);}
+        .result-card {
+            background: linear-gradient(145deg, #fffdf9, #fff9f0);
+            border-radius: 28px;
+            padding: 20px;
+            border: 1px solid #ffe6c7;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8), 0 5px 12px rgba(0,0,0,0.05);
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed #0e0d0d;
+            padding-bottom: 8px;
+        }
+        .info-label {
+            font-weight: 800;
+            width: 210px;
+            color: #2c3e66;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+        }
+        .info-value {
+            font-weight: 600;
+            color: #2c3e66;
+            font-family: 'Inter', monospace;
+            font-size: 0.95rem;
+        }
+        .copy-btn {
+            background: linear-gradient(135deg, #a15b0ae8 20%, #faf602e3 100%);
+            color: rgb(10, 10, 10);
+            border: 2px solid #0e0d0d;
+            padding: 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .copy-btn:hover {
+            background: rgb(142, 248, 3);
+            transform: scale(0.98);
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #1e3c72;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 500;
+            z-index: 999;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        .help-note {
+            font-size: 0.7rem;
+            color: #5d6f8f;
+            margin-top: 12px;
+            background: #f0f7ff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+        hr {
+            margin: 16px 0;
+            border-color: #e2e8f0;
+        }
+        .generate-btn-large {
+            width: 100%;
+            background: linear-gradient(95deg, #10b981, #059669);
+            margin-top: 10px;
+        }
+        .generate-btn-large:hover {
+            background: linear-gradient(95deg, #059669, #047857);
+        }
+        .sub-section {
+            background: #fef9f0;
+            border-radius: 20px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid #ffb74d;
+        }
+        .sub-section-title {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #b45309;
+            margin-bottom: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .time-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #eef3fc;
+            padding: 10px 16px;
+            border-radius: 60px;
+            margin-bottom: 16px;
+        }
+        .time-selector label {
+            margin-bottom: 0;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .time-selector select {
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            font-weight: 600;
+            background: white;
+        }
+        @media (max-width: 760px) {
+            .info-label { width: 160px; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="header-card">
+        <div class="brand-row">
+            <h1><i class="fas fa-chart-line" style="margin-right: 10px;"></i> EmonToto</h1>
+            <div class="clock-panel">
+                <div class="live-clock-big" id="liveClockMain">--:-- WIB</div>
+                <div class="manual-ctrl">
+                    <select id="hourDropdown">
+                        <option value="">-- Real Time --</option>
+                    </select>
+                    <button id="applyHourBtn"><i class="fas fa-clock"></i> Set Jam</button>
+                    <button id="resetRealBtn"><i class="fas fa-sync-alt"></i> Real Time</button>
+                </div>
+            </div>
+        </div>
+        <div class="date-header">
+            <i class="fas fa-calendar-alt"></i> <span id="headerDateDisplay">14 April 2026</span> &nbsp;|&nbsp;
+            <i class="fas fa-clock"></i> <span id="headerTimeDisplay">00:00 WIB</span>
+        </div>
+    </div>
+
+    <div class="two-col-grid">
+        <!-- Panel Kiri: Input Data -->
+        <div class="input-panel">
+            <div class="section-title"><i class="fas fa-database"></i> Input Data Dashboard</div>
+            
+            <!-- Pilihan waktu manual dengan dropdown -->
+            <div class="time-selector">
+                <label><i class="fas fa-hourglass-half"></i> Pukul Manual:</label>
+                <select id="manualHourSelect">
+                    <option value="">-- Pilih Jam --</option>
+                </select>
+                <button class="btn-secondary" id="setManualTimeBtn" style="padding: 8px 16px;">Terapkan</button>
+            </div>
+            
+            <!-- Kolom tempel format panjang (validasi & member aktif) -->
+            <div class="form-group">
+                <label><i class="fas fa-paste"></i> 1. Tempel Data Validasi & Member Aktif</label>
+                <textarea id="pasteValidasiAktif" rows="2" placeholder='Contoh:&#10;14	2026-04-14	82	55	67%	2,983,005.00	24	13	2,034,500.00	79	57	5,017,505.00	5	4	416,000.00'></textarea>
+                <div class="help-note">
+                    <i class="fas fa-info-circle"></i> Baca kolom ke-3 (Total Validasi) & kolom ke-4 (Member Aktif)
+                </div>
+            </div>
+
+            <!-- Kolom Deposit terpisah -->
+            <div class="sub-section">
+                <div class="sub-section-title"><i class="fas fa-money-bill-wave"></i> 2. Tempel Data DEPOSIT</div>
+                <div class="form-group" style="margin-bottom: 8px;">
+                    <textarea id="pasteDeposit" rows="2" placeholder='Contoh:&#10;Deposit Total:	76,435,576.00	607'></textarea>
+                </div>
+                <div class="help-note">
+                    Format: <strong>Deposit Total: [NOMINAL] [MEMBER]</strong>
+                </div>
+            </div>
+
+            <!-- Kolom Withdraw terpisah -->
+            <div class="sub-section">
+                <div class="sub-section-title"><i class="fas fa-arrow-down"></i> 3. Tempel Data WITHDRAW</div>
+                <div class="form-group" style="margin-bottom: 8px;">
+                    <textarea id="pasteWithdraw" rows="2" placeholder='Contoh:&#10;Withdraw Total:	49,189,000.00	119'></textarea>
+                </div>
+                <div class="help-note">
+                    Format: <strong>Withdraw Total: [NOMINAL] [MEMBER]</strong>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Tombol GENERATE utama -->
+            <div class="btn-group">
+                <button class="btn-primary generate-btn-large" id="generateAllBtn" style="background: linear-gradient(95deg, #10b981, #059669); width:100%;"><i class="fas fa-magic"></i> GENERATE LAPORAN</button>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn-secondary" id="resetFormBtn"><i class="fas fa-undo-alt"></i> Reset Semua Field</button>
+            </div>
+
+            <!-- Field manual override -->
+            <hr>
+            <div class="form-group">
+                <label>Total Validasi</label>
+                <input type="number" id="inputValidasi" placeholder="82" value="82">
+            </div>
+            <div class="form-group">
+                <label>Total Member Aktif / Deposit</label>
+                <input type="number" id="inputMemberAktif" placeholder="55" value="55">
+            </div>
+            <div class="form-group">
+                <label>Total Member Yang Deposit</label>
+                <input type="number" id="inputMemberDeposit" placeholder="607" value="607">
+            </div>
+            <div class="form-group">
+                <label>Total Nominal Deposit</label>
+                <input type="text" id="inputNominalDeposit" placeholder="76,435,576" value="76,435,576">
+            </div>
+            <div class="form-group">
+                <label>Total Member Yang Withdraw</label>
+                <input type="number" id="inputMemberWithdraw" placeholder="119" value="119">
+            </div>
+            <div class="form-group">
+                <label>Total Nominal Withdraw</label>
+                <input type="text" id="inputNominalWithdraw" placeholder="49,189,000" value="49,189,000">
+            </div>
+        </div>
+
+        <!-- Panel Kanan: Hasil Laporan -->
+        <div class="result-panel">
+            <div class="section-title"><i class="fas fa-chart-line"></i> Hasil Laporan</div>
+            <div class="result-card" id="resultContainer">
+                <div class="info-row"><span class="info-label">Info :</span><span class="info-value">EmonToto</span></div>
+                <div class="info-row"><span class="info-label">Tanggal :</span><span class="info-value" id="resultDate">14 April 2026</span></div>
+                <div class="info-row"><span class="info-label">Pukul :</span><span class="info-value" id="resultTime">00:00 WIB</span></div>
+                <div class="info-row"><span class="info-label">Total Validasi :</span><span class="info-value" id="resultValidasi">82</span></div>
+                <div class="info-row"><span class="info-label">Total Member Aktif / Deposit :</span><span class="info-value" id="resultMemberAktif">55</span></div>
+                <div class="info-row"><span class="info-label">Total Member Yang Deposit :</span><span class="info-value" id="resultMemberDeposit">607</span></div>
+                <div class="info-row"><span class="info-label">Total Nominal Deposit :</span><span class="info-value" id="resultNominalDeposit">Rp. 76,435,576,-</span></div>
+                <div class="info-row"><span class="info-label">Total Member Yang Withdraw :</span><span class="info-value" id="resultMemberWithdraw">119</span></div>
+                <div class="info-row"><span class="info-label">Total Nominal Withdraw :</span><span class="info-value" id="resultNominalWithdraw">Rp. 49,189,000,-</span></div>
+            </div>
+            <button class="copy-btn" id="copyReportBtn"><i class="fas fa-copy"></i> Copy Laporan</button>
+            <div class="help-note" style="margin-top: 14px; text-align: center;">
+                📌 Format Rupiah menggunakan <strong>koma (,) sebagai pemisah ribuan</strong> | Contoh: Rp. 49,964,000,-
+            </div>
+        </div>
+    </div>
+</div>
+<div id="toastMessage" class="toast-msg">✔️ Berhasil</div>
+
+<script>
+    // ======================== DATA STATE ========================
+    let currentHour = null;
+    let useManualHour = false;
+    
+    const headerDateSpan = document.getElementById('headerDateDisplay');
+    const headerTimeSpan = document.getElementById('headerTimeDisplay');
+    const liveClockSpan = document.getElementById('liveClockMain');
+    const resultDateSpan = document.getElementById('resultDate');
+    const resultTimeSpan = document.getElementById('resultTime');
+    const hourDropdown = document.getElementById('hourDropdown');
+    const manualHourSelect = document.getElementById('manualHourSelect');
+    const setManualTimeBtn = document.getElementById('setManualTimeBtn');
+    const resetRealBtn = document.getElementById('resetRealBtn');
+    const applyHourBtn = document.getElementById('applyHourBtn');
+    
+    function initHourDropdowns() {
+        const options = [];
+        for (let i = 0; i < 24; i++) {
+            let hourStr = i.toString().padStart(2, '0');
+            options.push(`<option value="${i}">${hourStr}:00 WIB</option>`);
+        }
+        hourDropdown.innerHTML = '<option value="">-- Real Time (Otomatis) --</option>' + options.join('');
+        manualHourSelect.innerHTML = '<option value="">-- Pilih Jam --</option>' + options.join('');
+    }
+    
+    function getCurrentWIBDate() {
+        const now = new Date();
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        return new Date(utc + (7 * 3600000));
+    }
+    
+    function formatDateWIB(date) {
+        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+    
+    function getCurrentTimeString() {
+        const now = getCurrentWIBDate();
+        const hours = now.getHours().toString().padStart(2, '0');
+        return `${hours}:00 WIB`;
+    }
+    
+    function getManualTimeString() {
+        if (useManualHour && currentHour !== null) {
+            return `${currentHour.toString().padStart(2, '0')}:00 WIB`;
+        }
+        return getCurrentTimeString();
+    }
+    
+    function updateTimeDisplay() {
+        const dateStr = formatDateWIB(getCurrentWIBDate());
+        headerDateSpan.innerText = dateStr;
+        resultDateSpan.innerText = dateStr;
+        const timeStr = getManualTimeString();
+        headerTimeSpan.innerText = timeStr;
+        resultTimeSpan.innerText = timeStr;
+        const now = getCurrentWIBDate();
+        const fullTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} WIB`;
+        liveClockSpan.innerText = fullTime;
+    }
+    
+    function setManualHour() {
+        const selected = manualHourSelect.value;
+        if (selected === "") { alert("Silakan pilih jam terlebih dahulu"); return; }
+        currentHour = parseInt(selected, 10);
+        useManualHour = true;
+        updateTimeDisplay();
+        showToast(`Jam diatur ke ${currentHour.toString().padStart(2, '0')}:00 WIB`);
+        if (hourDropdown) hourDropdown.value = currentHour;
+    }
+    
+    function resetToRealTime() {
+        useManualHour = false;
+        currentHour = null;
+        if (hourDropdown) hourDropdown.value = "";
+        if (manualHourSelect) manualHourSelect.value = "";
+        updateTimeDisplay();
+        showToast("Kembali ke mode Real Time");
+    }
+    
+    function applyHourFromMain() {
+        const selected = hourDropdown.value;
+        if (selected === "") { resetToRealTime(); } 
+        else {
+            currentHour = parseInt(selected, 10);
+            useManualHour = true;
+            updateTimeDisplay();
+            manualHourSelect.value = currentHour;
+            showToast(`Jam diatur ke ${currentHour.toString().padStart(2, '0')}:00 WIB`);
+        }
+    }
+    
+    function parseRupiahToNumber(value) {
+        if (value === undefined || value === null) return 0;
+        let str = String(value).trim();
+        if (str === "") return 0;
+        let hasComma = str.includes(',');
+        let hasDot = str.includes('.');
+        if (hasComma && hasDot) {
+            let lastCommaIndex = str.lastIndexOf(',');
+            let lastDotIndex = str.lastIndexOf('.');
+            if (lastDotIndex > lastCommaIndex) {
+                let withoutCommas = str.replace(/,/g, '');
+                let parts = withoutCommas.split('.');
+                return parseInt(parts[0], 10) || 0;
+            } else {
+                let withoutDots = str.replace(/\./g, '');
+                let parts = withoutDots.split(',');
+                return parseInt(parts[0], 10) || 0;
+            }
+        } else if (hasComma && !hasDot) {
+            let withoutCommas = str.replace(/,/g, '');
+            return parseInt(withoutCommas, 10) || 0;
+        } else if (hasDot && !hasComma) {
+            let dotIndex = str.indexOf('.');
+            let afterDot = str.substring(dotIndex + 1);
+            if (afterDot.length >= 1 && /^\d+$/.test(afterDot)) {
+                let parts = str.split('.');
+                return parseInt(parts[0], 10) || 0;
+            } else {
+                let withoutDots = str.replace(/\./g, '');
+                return parseInt(withoutDots, 10) || 0;
+            }
+        } else {
+            let cleaned = str.replace(/[^\d\-]/g, '');
+            return parseInt(cleaned, 10) || 0;
+        }
+    }
+    
+    function formatRupiahWithComma(amount) {
+        let rounded = Math.round(amount);
+        let formatted = rounded.toLocaleString('id-ID');
+        formatted = formatted.replace(/\./g, ',');
+        return `Rp. ${formatted},-`;
+    }
+    
+            function extractDeposit(rawText) {
+            if (!rawText.trim()) return null;
+            const lines = rawText.split(/\r?\n/);
+            const firstLine = lines.find(l => l.trim().length > 0);
+            if (!firstLine) return null;
+            const trimmed = firstLine.trim();
+            if (!/^deposit\s*total:/i.test(trimmed)) return null;
+            const after = trimmed.replace(/^deposit\s*total:/i, '').trim();
+            
+            // Gunakan regex untuk menangkap nominal dan jumlah member
+            let parts = after.split(/\s+/); 
+            if (parts.length >= 2) {
+                let nominalRaw = parts[0];
+                let memberRaw = parts[1];
+                
+                let nominal = parseRupiahToNumber(nominalRaw);
+                
+                // PERBAIKAN DI SINI: Hapus koma/titik sebelum parseInt
+                let member = parseInt(memberRaw.replace(/[,.]/g, ''), 10);
+                
+                if (isNaN(member)) member = 0;
+                return { nominal, member };
+            }
+            return null;
+        }
+    
+            function extractWithdraw(rawText) {
+            // ... (kode awal sama)
+            if (parts.length >= 2) {
+                let nominalRaw = parts[0];
+                let memberRaw = parts[1];
+                let nominal = parseRupiahToNumber(nominalRaw);
+                
+                // PERBAIKAN DI SINI: Hapus koma/titik sebelum parseInt
+                let member = parseInt(memberRaw.replace(/[,.]/g, ''), 10);
+                
+                if (isNaN(member)) member = 0;
+                return { nominal, member };
+            }
+            return null;
+        }
+    
+    function extractValidasiAktif(rawText) {
+        if (!rawText.trim()) return null;
+        const lines = rawText.split(/\r?\n/);
+        const firstLine = lines.find(l => l.trim().length > 0);
+        if (!firstLine) return null;
+        let parts = firstLine.split(/\t+/);
+        if (parts.length < 4) parts = firstLine.trim().split(/\s+/);
+        if (parts.length < 4) return null;
+        let validasi = parseInt(parts[2], 10);
+        let aktif = parseInt(parts[3], 10);
+        if (isNaN(validasi)) validasi = 0;
+        if (isNaN(aktif)) aktif = 0;
+        return { validasi, aktif };
+    }
+    
+    function getFormData() {
+        let validasi = parseInt(document.getElementById('inputValidasi').value, 10) || 0;
+        let memberAktif = parseInt(document.getElementById('inputMemberAktif').value, 10) || 0;
+        let memberDeposit = parseInt(document.getElementById('inputMemberDeposit').value, 10) || 0;
+        let memberWithdraw = parseInt(document.getElementById('inputMemberWithdraw').value, 10) || 0;
+        let nominalDeposit = parseRupiahToNumber(document.getElementById('inputNominalDeposit').value);
+        let nominalWithdraw = parseRupiahToNumber(document.getElementById('inputNominalWithdraw').value);
+        return { validasi, memberAktif, memberDeposit, nominalDeposit, memberWithdraw, nominalWithdraw };
+    }
+    
+    function updateResultPanel() {
+        const data = getFormData();
+        document.getElementById('resultValidasi').innerText = data.validasi;
+        document.getElementById('resultMemberAktif').innerText = data.memberAktif;
+        document.getElementById('resultMemberDeposit').innerText = data.memberDeposit;
+        document.getElementById('resultNominalDeposit').innerHTML = formatRupiahWithComma(data.nominalDeposit);
+        document.getElementById('resultMemberWithdraw').innerText = data.memberWithdraw;
+        document.getElementById('resultNominalWithdraw').innerHTML = formatRupiahWithComma(data.nominalWithdraw);
+    }
+    
+    function processAllAndGenerate() {
+        const validasiText = document.getElementById('pasteValidasiAktif').value;
+        const depositText = document.getElementById('pasteDeposit').value;
+        const withdrawText = document.getElementById('pasteWithdraw').value;
+        
+        if (validasiText.trim()) {
+            const va = extractValidasiAktif(validasiText);
+            if (va) {
+                document.getElementById('inputValidasi').value = va.validasi;
+                document.getElementById('inputMemberAktif').value = va.aktif;
+            }
+        }
+        if (depositText.trim()) {
+            const deposit = extractDeposit(depositText);
+            if (deposit) {
+                document.getElementById('inputMemberDeposit').value = deposit.member;
+                document.getElementById('inputNominalDeposit').value = formatRupiahWithComma(deposit.nominal).replace('Rp. ', '').replace(',-', '');
+            }
+        }
+        if (withdrawText.trim()) {
+            const withdraw = extractWithdraw(withdrawText);
+            if (withdraw) {
+                document.getElementById('inputMemberWithdraw').value = withdraw.member;
+                document.getElementById('inputNominalWithdraw').value = formatRupiahWithComma(withdraw.nominal).replace('Rp. ', '').replace(',-', '');
+            }
+        }
+        updateResultPanel();
+        showToast("✅ Laporan berhasil digenerate dengan format Rupiah koma!");
+    }
+    
+    function resetAll() {
+        document.getElementById('pasteValidasiAktif').value = '14\t2026-04-14\t82\t55\t67%\t2,983,005.00\t24\t13\t2,034,500.00\t79\t57\t5,017,505.00\t5\t4\t416,000.00';
+        document.getElementById('pasteDeposit').value = 'Deposit Total:\t76,435,576.00\t607';
+        document.getElementById('pasteWithdraw').value = 'Withdraw Total:\t49,189,000.00\t119';
+        document.getElementById('inputValidasi').value = '82';
+        document.getElementById('inputMemberAktif').value = '55';
+        document.getElementById('inputMemberDeposit').value = '607';
+        document.getElementById('inputNominalDeposit').value = '76,435,576';
+        document.getElementById('inputMemberWithdraw').value = '119';
+        document.getElementById('inputNominalWithdraw').value = '49,189,000';
+        updateResultPanel();
+        showToast("Reset ke contoh awal dengan format Rupiah koma");
+    }
+    
+    function copyReport() {
+        const data = getFormData();
+        const date = resultDateSpan.innerText;
+        const time = resultTimeSpan.innerText;
+        const report = `Info : EmonToto
+${date}
+Pukul : ${time}
+
+Total Validasi : ${data.validasi}
+Total Member Aktif / Deposit : ${data.memberAktif}
+
+Total Member Yang Deposit : ${data.memberDeposit}
+Total Nominal Deposit : ${formatRupiahWithComma(data.nominalDeposit)}
+
+Total Member Yang Withdraw : ${data.memberWithdraw}
+Total Nominal Withdraw : ${formatRupiahWithComma(data.nominalWithdraw)}`;
+        navigator.clipboard.writeText(report).then(() => showToast("📋 Laporan disalin dengan format Rp. xxx,xxx,-")).catch(() => alert("Gagal copy"));
+    }
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toastMessage');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+    }
+    
+    document.getElementById('generateAllBtn').addEventListener('click', processAllAndGenerate);
+    document.getElementById('resetFormBtn').addEventListener('click', resetAll);
+    document.getElementById('copyReportBtn').addEventListener('click', copyReport);
+    setManualTimeBtn.addEventListener('click', setManualHour);
+    resetRealBtn.addEventListener('click', resetToRealTime);
+    applyHourBtn.addEventListener('click', applyHourFromMain);
+    
+    const inputs = ['inputValidasi', 'inputMemberAktif', 'inputMemberDeposit', 'inputNominalDeposit', 'inputMemberWithdraw', 'inputNominalWithdraw'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', () => updateResultPanel());
+    });
+    
+    setInterval(() => {
+        if (!useManualHour) updateTimeDisplay();
+        else {
+            const now = getCurrentWIBDate();
+            liveClockSpan.innerText = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} WIB`;
+        }
+    }, 1000);
+    
+    initHourDropdowns();
+    updateTimeDisplay();
+    updateResultPanel();
+</script>
+</body>
+</html>
